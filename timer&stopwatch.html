@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Timer & Stopwatch</title>
+</head>
+<body>
+	<h1>Timer & Stopwatch</h1>
+	<form>
+		<label for="timerMinutes">Timer (Minutes):</label>
+		<input type="number" id="timerMinutes"><br><br>
+
+		<input type="button" value="Start Timer" onclick="startTimer()"><br><br>
+
+		<label for="stopwatch">Stopwatch:</label>
+		<input type="text" id="stopwatch" value="00:00:00" readonly><br><br>
+
+		<input type="button" value="Start" onclick="startStopwatch()">
+		<input type="button" value="Stop" onclick="stopStopwatch()">
+		<input type="button" value="Reset" onclick="resetStopwatch()">
+	</form>
+
+	<script>
+		var timerInterval;
+		var timerMinutes;
+		var stopwatchInterval;
+		var stopwatchTime = 0;
+
+		function startTimer() {
+			timerMinutes = document.getElementById("timerMinutes").value;
+			var timerSeconds = timerMinutes * 60;
+
+			timerInterval = setInterval(function() {
+				timerSeconds--;
+
+				if (timerSeconds < 0) {
+					clearInterval(timerInterval);
+					alert("Timer done!");
+				} else {
+					var timerMinutesLeft = Math.floor(timerSeconds / 60);
+					var timerSecondsLeft = timerSeconds % 60;
+
+					document.getElementById("stopwatch").value = timerMinutesLeft.toString().padStart(2, "0") + ":" + timerSecondsLeft.toString().padStart(2, "0") + ":00";
+				}
+			}, 1000);
+		}
+
+		function startStopwatch() {
+			stopwatchInterval = setInterval(function() {
+				stopwatchTime++;
+
+				var stopwatchHours = Math.floor(stopwatchTime / 3600);
+				var stopwatchMinutes = Math.floor((stopwatchTime - (stopwatchHours * 3600)) / 60);
+				var stopwatchSeconds = stopwatchTime % 60;
+
+				document.getElementById("stopwatch").value = stopwatchHours.toString().padStart(2, "0") + ":" + stopwatchMinutes.toString().padStart(2, "0") + ":" + stopwatchSeconds.toString().padStart(2, "0");
+			}, 1000);
+		}
+
+		function stopStopwatch() {
+			clearInterval(stopwatchInterval);
+		}
+
+		function resetStopwatch() {
+			stopwatchTime = 0;
+			document.getElementById("stopwatch").value = "00:00:00";
+		}
+	</script>
+</body>
+</html>
